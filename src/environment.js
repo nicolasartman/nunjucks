@@ -302,7 +302,7 @@ var Environment = Obj.extend({
 
         this.getTemplate(name, function(err, tmpl) {
             if(err && cb) {
-                callbackAsap(cb, err);
+                cb(err);
             }
             else if(err) {
                 throw err;
@@ -466,8 +466,7 @@ Template = Obj.extend({
             _this.compile();
         } catch (_err) {
             var err = lib.prettifyError(this.path, this.env.dev, _err);
-            if (cb) return callbackAsap(cb, err);
-            else throw err;
+            throw err;
         }
 
         var context = new Context(ctx || {}, _this.blocks, _this.env);
@@ -487,7 +486,7 @@ Template = Obj.extend({
 
                 if(cb) {
                     if(forceAsync) {
-                        callbackAsap(cb, err, res);
+                        cb(err, res);
                     }
                     else {
                         cb(err, res);
